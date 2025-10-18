@@ -87,7 +87,13 @@ export interface User {
   id: string;
   email: string;
   full_name?: string;
-  role: 'customer' | 'admin';
+  created_at: string;
+}
+
+export interface UserRole {
+  id: string;
+  user_id: string;
+  role: 'admin' | 'customer';
   created_at: string;
 }
 

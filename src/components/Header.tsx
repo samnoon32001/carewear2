@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { ShoppingCart, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/store/cart';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,8 +14,34 @@ import {
 
 export function Header() {
   const { getTotalItems } = useCart();
-  const { user, profile, signOut } = useAuth();
+  const { user, signOut } = useAuth();
+  const [isAdmin, setIsAdmin] = useState(false);
   const cartCount = getTotalItems();
+
+  useEffect(() => {
+    const checkAdmin = async () => {
+      if (!user) {
+        setIsAdmin(false);
+        return;
+      }
+      
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .eq('role', 'admin')
+        .single();
+      
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error checking admin status:', error);
+        return;
+      }
+      
+      setIsAdmin(!!data);
+    };
+
+    checkAdmin();
+  }, [user]);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -36,8 +64,8 @@ export function Header() {
           <Link to="/categories" className="text-sm font-medium transition-colors hover:text-primary">
             Categories
           </Link>
-          {profile?.role === 'admin' && (
-            <Link to="/admin" className="text-sm font-medium transition-colors hover:text-accent">
+          {isAdmin && (
+            <Link to="/admin/products" className="text-sm font-medium transition-colors hover:text-accent">
               Admin
             </Link>
           )}
