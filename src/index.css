@@ -2,102 +2,140 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    /* Medical Blue Theme - Professional & Trustworthy */
-    --background: 0 0% 100%;
-    --foreground: 217 33% 17%;
+    /* Luxe Color Palette */
+    --background: 0 0% 98%;
+    --foreground: 0 0% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 217 33% 17%;
+    --card-foreground: 0 0% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 217 33% 17%;
+    --popover-foreground: 0 0% 10%;
 
-    /* Primary: Medical Blue */
-    --primary: 221 83% 53%;
+    /* Primary: Deep Navy */
+    --primary: 220 33% 22%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 221 83% 45%;
+    --primary-hover: 220 33% 18%;
 
-    /* Secondary: Soft Gray */
-    --secondary: 210 20% 96%;
-    --secondary-foreground: 217 33% 17%;
+    /* Secondary: Warm Taupe */
+    --secondary: 30 15% 85%;
+    --secondary-foreground: 0 0% 10%;
 
     /* Muted */
-    --muted: 210 20% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 30 15% 95%;
+    --muted-foreground: 0 0% 40%;
 
-    /* Accent: Mint Teal for CTAs */
-    --accent: 173 58% 39%;
+    /* Accent: Gold */
+    --accent: 36 100% 50%;
     --accent-foreground: 0 0% 100%;
-    --accent-hover: 173 58% 32%;
+    --accent-hover: 36 100% 45%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 221 83% 53%;
+    --border: 30 15% 90%;
+    --input: 30 15% 90%;
+    --ring: 36 100% 50%;
 
     --radius: 0.5rem;
 
-    /* Gradients for hero sections */
-    --gradient-primary: linear-gradient(135deg, hsl(221 83% 53%), hsl(173 58% 39%));
-    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%), hsl(210 20% 98%));
-
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(220 33% 22%), hsl(36 100% 50%));
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%), hsl(30 15% 98%));
+    
+    /* Typography */
+    --font-sans: 'Montserrat', sans-serif;
+    --font-serif: 'Playfair Display', serif;
+    
     /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow: 0 4px 20px -4px rgb(0 0 0 / 0.05);
+    --shadow-md: 0 8px 30px -6px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 15px 40px -10px rgb(0 0 0 / 0.15);
+    --shadow-xl: 0 20px 50px -12px rgb(0 0 0 / 0.2);
     --shadow-soft: 0 2px 8px -2px hsl(217 33% 17% / 0.08);
     --shadow-medium: 0 4px 16px -4px hsl(217 33% 17% / 0.12);
     --shadow-large: 0 8px 32px -8px hsl(217 33% 17% / 0.16);
   }
-
+  
   .dark {
-    --background: 217 33% 10%;
-    --foreground: 210 40% 98%;
-
-    --card: 217 33% 13%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 217 33% 13%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 221 83% 60%;
+    --background: 220 33% 10%;
+    --foreground: 0 0% 95%;
+    --card: 220 33% 12%;
+    --card-foreground: 0 0% 95%;
+    --popover: 220 33% 12%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 36 100% 50%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 221 83% 53%;
-
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
-
-    --accent: 173 58% 45%;
+    --primary-hover: 36 100% 45%;
+    --secondary: 30 15% 20%;
+    --secondary-foreground: 0 0% 95%;
+    --muted: 30 15% 15%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 36 100% 50%;
     --accent-foreground: 0 0% 100%;
-    --accent-hover: 173 58% 39%;
-
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217 33% 20%;
-    --input: 217 33% 20%;
-    --ring: 221 83% 60%;
-
+    --accent-hover: 36 90% 45%;
+    --destructive: 0 84% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 30 15% 20%;
+    --input: 30 15% 20%;
+    --ring: 36 100% 50%;
     --shadow-soft: 0 2px 8px -2px hsl(0 0% 0% / 0.2);
     --shadow-medium: 0 4px 16px -4px hsl(0 0% 0% / 0.3);
     --shadow-large: 0 8px 32px -8px hsl(0 0% 0% / 0.4);
   }
-}
-
-@layer base {
+  
   * {
-    @apply border-border;
+    border-color: hsl(var(--border));
   }
-
+  
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+  }
+  
+  .text-gradient {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(
+      to right,
+      hsl(var(--primary)),
+      hsl(var(--accent))
+    );
+  }
+  
+  .section-padding {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  
+  @media (min-width: 768px) {
+    .section-padding {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .section-padding {
+      padding-top: 8rem;
+      padding-bottom: 8rem;
+    }
   }
 }
