@@ -4,6 +4,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ProductWithRating } from '@/types';
 import { formatCurrency } from '@/utils/formatCurrency';
+import { getImageUrl } from '@/utils/imageUtils';
 
 interface ProductCardProps {
   product: ProductWithRating;
@@ -29,9 +30,16 @@ export function ProductCard({ product, imageUrl }: ProductCardProps) {
       <Link to={`/product/${product.slug}`}>
         <div className="aspect-[3/4] overflow-hidden bg-muted">
           <img
-            src={imageUrl || '/placeholder.svg'}
+            src={imageUrl || {
+              1: '/src/assets/product-scrubs-burgundy.jpg',
+              2: '/src/assets/product-scrubs-navy.jpg',
+              3: '/src/assets/product-scrubs-teal.jpg'
+            }[product.id % 3 + 1] || '/placeholder.svg'}
             alt={product.name}
             className="h-full w-full object-cover transition-transform group-hover:scale-105"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = '/placeholder.svg';
+            }}
           />
         </div>
       </Link>
