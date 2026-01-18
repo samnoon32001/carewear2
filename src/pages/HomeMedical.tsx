@@ -23,16 +23,75 @@ export default function HomeMedical() {
 
   const fetchFeaturedProducts = async () => {
     try {
-      const { data } = await supabase
-        .from('product_with_avg_rating')
-        .select('*')
-        .eq('featured', true)
-        .order('created_at', { ascending: false })
-        .limit(8);
-
-      if (data) {
-        setFeaturedProducts(data as ProductWithRating[]);
-      }
+      // Use mock data since Supabase table doesn't exist
+      const mockProducts: ProductWithRating[] = [
+        {
+          id: '1',
+          name: 'Premium Medical Scrub Top',
+          slug: 'premium-medical-scrub-top',
+          description: 'Professional medical-grade scrub top with moisture-wicking technology',
+          price: 29.99,
+          stock: 15,
+          category_id: '1',
+          sku: 'MED-TOP-001',
+          sizes: ['XS', 'S', 'M', 'L', 'XL'],
+          colors: ['Navy Blue', 'Royal Blue', 'Ceil Blue'],
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          avg_rating: 4.5,
+          reviews_count: 12
+        },
+        {
+          id: '2',
+          name: 'Comfortable Scrub Pants',
+          slug: 'comfortable-scrub-pants',
+          description: 'Medical scrub pants with elastic waist and multiple pockets',
+          price: 34.99,
+          stock: 20,
+          category_id: '2',
+          sku: 'MED-PNT-001',
+          sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+          colors: ['Navy Blue', 'Black', 'Gray'],
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          avg_rating: 4.7,
+          reviews_count: 18
+        },
+        {
+          id: '3',
+          name: 'Professional Lab Coat',
+          slug: 'professional-lab-coat',
+          description: 'Classic white lab coat with professional appearance',
+          price: 59.99,
+          stock: 10,
+          category_id: '3',
+          sku: 'MED-LAB-001',
+          sizes: ['S', 'M', 'L', 'XL'],
+          colors: ['White'],
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          avg_rating: 4.8,
+          reviews_count: 25
+        },
+        {
+          id: '4',
+          name: 'Complete Scrub Set',
+          slug: 'complete-scrub-set',
+          description: 'Matching scrub top and pants set for professionals',
+          price: 54.99,
+          stock: 8,
+          category_id: '4',
+          sku: 'MED-SET-001',
+          sizes: ['S', 'M', 'L', 'XL'],
+          colors: ['Navy Blue', 'Royal Blue'],
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          avg_rating: 4.6,
+          reviews_count: 15
+        }
+      ];
+      
+      setFeaturedProducts(mockProducts);
     } catch (error) {
       console.error('Error fetching featured products:', error);
     } finally {
@@ -42,14 +101,16 @@ export default function HomeMedical() {
 
   const fetchCategories = async () => {
     try {
-      const { data } = await supabase
-        .from('categories')
-        .select('*')
-        .order('name');
-
-      if (data) {
-        setCategories(data as Category[]);
-      }
+      // Use mock data since Supabase table doesn't exist
+      const mockCategories: Category[] = [
+        { id: '1', name: 'Scrub Tops', slug: 'scrub-tops', description: 'Professional medical scrub tops', created_at: new Date().toISOString() },
+        { id: '2', name: 'Scrub Pants', slug: 'scrub-pants', description: 'Comfortable medical scrub pants', created_at: new Date().toISOString() },
+        { id: '3', name: 'Lab Coats', slug: 'lab-coats', description: 'Professional lab coats', created_at: new Date().toISOString() },
+        { id: '4', name: 'Scrub Sets', slug: 'scrub-sets', description: 'Complete scrub sets', created_at: new Date().toISOString() },
+        { id: '5', name: 'Medical Accessories', slug: 'accessories', description: 'Medical accessories', created_at: new Date().toISOString() },
+        { id: '6', name: 'Nursing Shoes', slug: 'shoes', description: 'Comfortable nursing shoes', created_at: new Date().toISOString() }
+      ];
+      setCategories(mockCategories);
     } catch (error) {
       console.error('Error fetching categories:', error);
     }

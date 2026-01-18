@@ -34,56 +34,151 @@ export default function ShopMedical() {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      let query = supabase
-        .from('product_with_avg_rating')
-        .select('*');
+      // Use mock data since Supabase table doesn't exist
+      const mockProducts: ProductWithRating[] = [
+        {
+          id: '1',
+          name: 'Premium Medical Scrub Top',
+          slug: 'premium-medical-scrub-top',
+          description: 'Professional medical-grade scrub top with moisture-wicking technology',
+          price: 29.99,
+          stock: 15,
+          category_id: '1',
+          sku: 'MED-TOP-001',
+          sizes: ['XS', 'S', 'M', 'L', 'XL'],
+          colors: ['Navy Blue', 'Royal Blue', 'Ceil Blue'],
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          avg_rating: 4.5,
+          reviews_count: 12
+        },
+        {
+          id: '2',
+          name: 'Comfortable Scrub Pants',
+          slug: 'comfortable-scrub-pants',
+          description: 'Medical scrub pants with elastic waist and multiple pockets',
+          price: 34.99,
+          stock: 20,
+          category_id: '2',
+          sku: 'MED-PNT-001',
+          sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
+          colors: ['Navy Blue', 'Black', 'Gray'],
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          avg_rating: 4.7,
+          reviews_count: 18
+        },
+        {
+          id: '3',
+          name: 'Professional Lab Coat',
+          slug: 'professional-lab-coat',
+          description: 'Classic white lab coat with professional appearance',
+          price: 59.99,
+          stock: 10,
+          category_id: '3',
+          sku: 'MED-LAB-001',
+          sizes: ['S', 'M', 'L', 'XL'],
+          colors: ['White'],
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          avg_rating: 4.8,
+          reviews_count: 25
+        },
+        {
+          id: '4',
+          name: 'Complete Scrub Set',
+          slug: 'complete-scrub-set',
+          description: 'Matching scrub top and pants set for professionals',
+          price: 54.99,
+          stock: 8,
+          category_id: '4',
+          sku: 'MED-SET-001',
+          sizes: ['S', 'M', 'L', 'XL'],
+          colors: ['Navy Blue', 'Royal Blue'],
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          avg_rating: 4.6,
+          reviews_count: 15
+        },
+        {
+          id: '5',
+          name: 'Medical Scrub Jacket',
+          slug: 'medical-scrub-jacket',
+          description: 'Warm medical scrub jacket for cold environments',
+          price: 39.99,
+          stock: 12,
+          category_id: '5',
+          sku: 'MED-JKT-001',
+          sizes: ['S', 'M', 'L', 'XL'],
+          colors: ['Navy Blue', 'Black'],
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          avg_rating: 4.4,
+          reviews_count: 8
+        },
+        {
+          id: '6',
+          name: 'Nursing Clogs',
+          slug: 'nursing-clogs',
+          description: 'Comfortable nursing clogs with slip-resistant soles',
+          price: 44.99,
+          stock: 25,
+          category_id: '6',
+          sku: 'MED-SHOE-001',
+          sizes: ['6', '7', '8', '9', '10'],
+          colors: ['White', 'Black'],
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          avg_rating: 4.9,
+          reviews_count: 32
+        }
+      ];
 
+      let filteredProducts = mockProducts;
+      
       // Apply filters
       if (searchQuery) {
-        query = query.ilike('name', `%${searchQuery}%`);
+        filteredProducts = filteredProducts.filter(p => 
+          p.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
       }
-      if (selectedCategory) {
-        query = query.eq('category_id', selectedCategory);
+      if (selectedCategory && selectedCategory !== 'all') {
+        filteredProducts = filteredProducts.filter(p => p.category_id === selectedCategory);
       }
-      query = query.gte('price', priceRange[0]).lte('price', priceRange[1]);
+      filteredProducts = filteredProducts.filter(p => p.price >= priceRange[0] && p.price <= priceRange[1]);
       if (inStockOnly) {
-        query = query.gt('stock', 0);
+        filteredProducts = filteredProducts.filter(p => p.stock > 0);
       }
 
       // Apply sorting
       switch (sortBy) {
         case 'newest':
-          query = query.order('created_at', { ascending: false });
+          filteredProducts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
           break;
         case 'price-low':
-          query = query.order('price', { ascending: true });
+          filteredProducts.sort((a, b) => a.price - b.price);
           break;
         case 'price-high':
-          query = query.order('price', { ascending: false });
+          filteredProducts.sort((a, b) => b.price - a.price);
           break;
         case 'rating':
-          query = query.order('avg_rating', { ascending: false });
+          filteredProducts.sort((a, b) => b.avg_rating - a.avg_rating);
           break;
       }
-
-      const { data } = await query;
-      if (data) {
-        let filteredProducts = data as ProductWithRating[];
-        
-        // Client-side filtering for sizes and colors
-        if (selectedSizes.length > 0) {
-          filteredProducts = filteredProducts.filter(p => 
-            p.sizes.some(size => selectedSizes.includes(size))
-          );
-        }
-        if (selectedColors.length > 0) {
-          filteredProducts = filteredProducts.filter(p => 
-            p.colors.some(color => selectedColors.includes(color))
-          );
-        }
-        
-        setProducts(filteredProducts);
+      
+      // Client-side filtering for sizes and colors
+      if (selectedSizes.length > 0) {
+        filteredProducts = filteredProducts.filter(p => 
+          p.sizes.some(size => selectedSizes.includes(size))
+        );
       }
+      if (selectedColors.length > 0) {
+        filteredProducts = filteredProducts.filter(p => 
+          p.colors.some(color => selectedColors.includes(color))
+        );
+      }
+      
+      setProducts(filteredProducts);
     } catch (error) {
       console.error('Error fetching products:', error);
     } finally {
@@ -93,11 +188,16 @@ export default function ShopMedical() {
 
   const fetchCategories = async () => {
     try {
-      const { data } = await supabase
-        .from('categories')
-        .select('*')
-        .order('name');
-      if (data) setCategories(data as Category[]);
+      // Use mock data since Supabase table doesn't exist
+      const mockCategories: Category[] = [
+        { id: '1', name: 'Scrub Tops', slug: 'scrub-tops', description: 'Professional medical scrub tops', created_at: new Date().toISOString() },
+        { id: '2', name: 'Scrub Pants', slug: 'scrub-pants', description: 'Comfortable medical scrub pants', created_at: new Date().toISOString() },
+        { id: '3', name: 'Lab Coats', slug: 'lab-coats', description: 'Professional lab coats', created_at: new Date().toISOString() },
+        { id: '4', name: 'Scrub Sets', slug: 'scrub-sets', description: 'Complete scrub sets', created_at: new Date().toISOString() },
+        { id: '5', name: 'Medical Accessories', slug: 'accessories', description: 'Medical accessories', created_at: new Date().toISOString() },
+        { id: '6', name: 'Nursing Shoes', slug: 'shoes', description: 'Comfortable nursing shoes', created_at: new Date().toISOString() }
+      ];
+      setCategories(mockCategories);
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
@@ -205,7 +305,7 @@ export default function ShopMedical() {
                     <SelectValue placeholder="All Categories" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Categories</SelectItem>
+                    <SelectItem value="all">All Categories</SelectItem>
                     {categories.map((category) => (
                       <SelectItem key={category.id} value={category.id}>
                         {category.name}
