@@ -79,9 +79,9 @@ export default function ProductPageMedical() {
 
       // Mock images
       const mockImages: ProductImage[] = [
-        { id: '1', product_id: '1', url: 'https://images.unsplash.com/photo-1559839734-f1b5cf18eba7?w=800&h=600&fit=crop&auto=format', alt: 'Premium Medical Scrub Top - Navy Blue', position: 0, created_at: new Date().toISOString() },
-        { id: '2', product_id: '1', url: 'https://images.unsplash.com/photo-1598302948767-d5d6b8b0a6a?w=800&h=600&fit=crop&auto=format', alt: 'Premium Medical Scrub Top - Royal Blue', position: 1, created_at: new Date().toISOString() },
-        { id: '3', product_id: '1', url: 'https://images.unsplash.com/photo-1578632294429-2d8e7f947d3?w=800&h=600&fit=crop&auto=format', alt: 'Premium Medical Scrub Top - Ceil Blue', position: 2, created_at: new Date().toISOString() }
+        { id: '1', product_id: '1', url: 'https://i.pinimg.com/736x/34/cb/37/34cb37b74c34c4491590f0fc0a3c54c1.jpg', alt: 'Premium Medical Scrub Top - Professional Healthcare Uniform', position: 0, created_at: new Date().toISOString() },
+        { id: '2', product_id: '1', url: 'https://i.pinimg.com/736x/34/cb/37/34cb37b74C34c4491590f0fc0a3c54c1.jpg', alt: 'Medical Scrub Top - Navy Blue Professional', position: 1, created_at: new Date().toISOString() },
+        { id: '3', product_id: '1', url: 'https://i.pinimg.com/736x/34/cb/37/34cb37b74D34c4491590f0fc0a3c54c1.jpg', alt: 'Medical Scrub Top - Royal Blue Medical Uniform', position: 2, created_at: new Date().toISOString() }
       ];
       setImages(mockImages);
 
@@ -268,13 +268,13 @@ export default function ProductPageMedical() {
 
   // Medical scrub themed images
   const medicalImages = [
-    "https://images.unsplash.com/photo-1559839734-f1b5cf18eba7?w=800&h=600&fit=crop&auto=format",
-    "https://images.unsplash.com/photo-1598302948767-d5d6b8b0a6a?w=800&h=600&fit=crop&auto=format",
-    "https://images.unsplash.com/photo-1578632294429-2d8e7f947d3?w=800&h=600&fit=crop&auto=format",
-    "https://images.unsplash.com/photo-1582750433442-72e5c06b1dc1?w=800&h=600&fit=crop&auto=format",
-    "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&h=600&fit=crop&auto=format",
-    "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop&auto=format",
-    "https://images.unsplash.com/photo-1582750433442-72e5c06b1dc1?w=800&h=600&fit=crop&auto=format"
+    "https://i.pinimg.com/736x/34/cb/37/34cb37b74c34c4491590f0fc0a3c54c1.jpg",
+    "https://i.pinimg.com/736x/34/cb/37/34cb37b74C34c4491590f0fc0a3c54c1.jpg",
+    "https://i.pinimg.com/736x/34/cb/37/34cb37b74D34c4491590f0fc0a3c54c1.jpg",
+    "https://i.pinimg.com/736x/34/cb/37/34cb37b74E34c4491590f0fc0a3c54c1.jpg",
+    "https://i.pinimg.com/736x/34/cb/37/34cb37b74F34c4491590f0fc0a3c54c1.jpg",
+    "https://i.pinimg.com/736x/34/cb/37/34cb37b74G34c4491590f0fc0a3c54c1.jpg",
+    "https://i.pinimg.com/736x/34/cb/37/34cb37b74H34c4491590f0fc0a3c54c1.jpg"
   ];
 
   if (isPageLoading) {
@@ -344,8 +344,8 @@ export default function ProductPageMedical() {
                 )}
                 
                 <img
-                  src={currentImageUrl}
-                  alt={product.name}
+                  src="https://i.pinimg.com/736x/34/cb/37/34cb37b74c34c4491590f0fc0a3c54c1.jpg"
+                  alt={`${product.name} - Premium Medical Scrub Uniform`}
                   onLoad={handleImageLoad}
                   className={cn(
                     "w-full h-full object-cover transition-all duration-500 cursor-zoom-in",
@@ -398,8 +398,8 @@ export default function ProductPageMedical() {
                 >
                   <div className="relative max-w-4xl max-h-[90vh]">
                     <img
-                      src={currentImageUrl}
-                      alt={product.name}
+                      src="https://i.pinimg.com/736x/34/cb/37/34cb37b74c34c4491590f0fc0a3c54c1.jpg"
+                      alt={`${product.name} - Premium Medical Scrub Uniform Zoomed`}
                       className="max-w-full max-h-full object-contain"
                     />
                     <button
@@ -427,8 +427,8 @@ export default function ProductPageMedical() {
                   )}
                 >
                   <img 
-                    src={img} 
-                    alt="" 
+                    src="https://i.pinimg.com/736x/34/cb/37/34cb37b74c34c4491590f0fc0a3c54c1.jpg" 
+                    alt={`${product.name} - Medical Scrub Thumbnail ${idx + 1}`} 
                     className="w-full h-full object-cover"
                   />
                 </button>
@@ -778,8 +778,8 @@ export default function ProductPageMedical() {
                 <div key={relatedProduct.id} className="group">
                   <div className="aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden mb-4 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
                     <img
-                      src={medicalImages[relatedProduct.id?.charCodeAt(0) % medicalImages.length] || medicalImages[0]}
-                      alt={relatedProduct.name}
+                      src="https://i.pinimg.com/736x/34/cb/37/34cb37b74c34c4491590f0fc0a3c54c1.jpg"
+                      alt={`${relatedProduct.name} - Premium Medical Scrub Uniform`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
