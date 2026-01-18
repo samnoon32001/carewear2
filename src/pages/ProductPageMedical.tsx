@@ -79,9 +79,9 @@ export default function ProductPageMedical() {
 
       // Mock images
       const mockImages: ProductImage[] = [
-        { id: '1', product_id: '1', url: 'https://images.unsplash.com/photo-1559839734-f1b5cf18eba7?w=800&h=600&fit=crop&auto=format', position: 0, created_at: new Date().toISOString() },
-        { id: '2', product_id: '1', url: 'https://images.unsplash.com/photo-1598302948767-d5d6b8b0a6a?w=800&h=600&fit=crop&auto=format', position: 1, created_at: new Date().toISOString() },
-        { id: '3', product_id: '1', url: 'https://images.unsplash.com/photo-1578632294429-2d8e7f947d3?w=800&h=600&fit=crop&auto=format', position: 2, created_at: new Date().toISOString() }
+        { id: '1', product_id: '1', url: 'https://images.unsplash.com/photo-1559839734-f1b5cf18eba7?w=800&h=600&fit=crop&auto=format', alt: 'Premium Medical Scrub Top - Navy Blue', position: 0, created_at: new Date().toISOString() },
+        { id: '2', product_id: '1', url: 'https://images.unsplash.com/photo-1598302948767-d5d6b8b0a6a?w=800&h=600&fit=crop&auto=format', alt: 'Premium Medical Scrub Top - Royal Blue', position: 1, created_at: new Date().toISOString() },
+        { id: '3', product_id: '1', url: 'https://images.unsplash.com/photo-1578632294429-2d8e7f947d3?w=800&h=600&fit=crop&auto=format', alt: 'Premium Medical Scrub Top - Ceil Blue', position: 2, created_at: new Date().toISOString() }
       ];
       setImages(mockImages);
 
@@ -141,6 +141,38 @@ export default function ProductPageMedical() {
           updated_at: new Date().toISOString(),
           avg_rating: 4.8,
           reviews_count: 25
+        },
+        {
+          id: '4',
+          name: 'Complete Scrub Set',
+          slug: 'complete-scrub-set',
+          description: 'Matching scrub top and pants set for professionals',
+          price: 54.99,
+          stock: 8,
+          category_id: '1',
+          sku: 'MED-SET-001',
+          sizes: ['S', 'M', 'L', 'XL'],
+          colors: ['Navy Blue', 'Royal Blue'],
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          avg_rating: 4.6,
+          reviews_count: 15
+        },
+        {
+          id: '5',
+          name: 'Medical Scrub Jacket',
+          slug: 'medical-scrub-jacket',
+          description: 'Warm medical scrub jacket for cold environments',
+          price: 39.99,
+          stock: 12,
+          category_id: '1',
+          sku: 'MED-JKT-001',
+          sizes: ['S', 'M', 'L', 'XL'],
+          colors: ['Navy Blue', 'Black'],
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          avg_rating: 4.4,
+          reviews_count: 8
         }
       ];
       setRelatedProducts(mockRelatedProducts);
@@ -241,7 +273,8 @@ export default function ProductPageMedical() {
     "https://images.unsplash.com/photo-1578632294429-2d8e7f947d3?w=800&h=600&fit=crop&auto=format",
     "https://images.unsplash.com/photo-1582750433442-72e5c06b1dc1?w=800&h=600&fit=crop&auto=format",
     "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&h=600&fit=crop&auto=format",
-    "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop&auto=format"
+    "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop&auto=format",
+    "https://images.unsplash.com/photo-1582750433442-72e5c06b1dc1?w=800&h=600&fit=crop&auto=format"
   ];
 
   if (isPageLoading) {
@@ -743,17 +776,19 @@ export default function ProductPageMedical() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {relatedProducts.map((relatedProduct) => (
                 <div key={relatedProduct.id} className="group">
-                  <div className="aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden mb-4 shadow-md hover:shadow-xl transition-all duration-300">
+                  <div className="aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden mb-4 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
                     <img
                       src={medicalImages[relatedProduct.id?.charCodeAt(0) % medicalImages.length] || medicalImages[0]}
                       alt={relatedProduct.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
-                  <h3 className="font-medium mb-2 text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
-                    {relatedProduct.name}
-                  </h3>
-                  <p className="font-bold text-gray-900">{formatCurrency(relatedProduct.price)}</p>
+                  <div className="p-4">
+                    <h3 className="font-medium mb-2 text-gray-900 group-hover:text-blue-600 transition-colors duration-200">
+                      {relatedProduct.name}
+                    </h3>
+                    <p className="font-bold text-gray-900">{formatCurrency(relatedProduct.price)}</p>
+                  </div>
                 </div>
               ))}
             </div>
