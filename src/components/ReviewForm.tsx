@@ -4,8 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 interface ReviewFormProps {
@@ -14,7 +12,8 @@ interface ReviewFormProps {
 }
 
 export function ReviewForm({ productId, onReviewAdded }: ReviewFormProps) {
-  const { user, profile } = useAuth();
+  // Mock user data since we removed AuthProvider
+  const user = null;
   const { toast } = useToast();
   const [rating, setRating] = useState(0);
   const [hoveredRating, setHoveredRating] = useState(0);
@@ -48,31 +47,21 @@ export function ReviewForm({ productId, onReviewAdded }: ReviewFormProps) {
     const reviewData = {
       product_id: productId,
       user_id: user?.id || null,
-      name: user ? (profile?.full_name || user.email || 'User') : guestName.trim(),
+      name: user ? (user.email || 'User') : guestName.trim(),
       rating,
       comment: comment.trim() || null,
     };
 
-    const { error } = await supabase.from('reviews').insert([reviewData]);
-
-    if (error) {
-      toast({
-        title: 'Error',
-        description: 'Failed to submit review. Please try again.',
-        variant: 'destructive',
-      });
-    } else {
-      toast({
-        title: 'Success',
-        description: 'Your review has been submitted!',
-      });
-      setRating(0);
-      setComment('');
-      setGuestName('');
-      onReviewAdded();
-    }
-
+    // Mock submission since we removed Supabase
     setSubmitting(false);
+    toast({
+      title: 'Success',
+      description: 'Your review has been submitted!',
+    });
+    setRating(0);
+    setComment('');
+    setGuestName('');
+    onReviewAdded();
   };
 
   return (

@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/hooks/useAuth';
 import { Order } from '@/types';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -20,37 +18,41 @@ import {
 } from '@/components/ui/table';
 
 export default function Dashboard() {
-  const { user, loading: authLoading, signOut } = useAuth();
+  // Mock user data since we removed AuthProvider
+  const user = null;
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('orders');
 
   useEffect(() => {
     const fetchOrders = async () => {
-      if (!user) return;
-
-      try {
-        const { data, error } = await supabase
-          .from('orders')
-          .select('*')
-          .eq('user_id', user.id)
-          .order('created_at', { ascending: false });
-
-        if (error) throw error;
-        setOrders(data as Order[]);
-      } catch (error) {
-        console.error('Error fetching orders:', error);
-      } finally {
-        setLoading(false);
-      }
+      // Mock orders since we removed Supabase
+      const mockOrders: Order[] = [
+        {
+          id: '1',
+          user_id: 'user1',
+          total: 89.97,
+          status: 'delivered',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        },
+        {
+          id: '2',
+          user_id: 'user1',
+          total: 54.99,
+          status: 'processing',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        }
+      ];
+      setOrders(mockOrders);
+      setLoading(false);
     };
 
-    if (!authLoading) {
-      fetchOrders();
-    }
-  }, [user, authLoading]);
+    fetchOrders();
+  }, []);
 
-  if (authLoading || loading) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -110,10 +112,6 @@ export default function Dashboard() {
     }
   };
   
-  const handleSignOut = async () => {
-    await signOut();
-  };
-  
   const totalSpent = orders.reduce((sum, order) => sum + order.total_amount, 0);
   const totalOrders = orders.length;
   const recentOrders = orders.slice(0, 5);
@@ -127,13 +125,9 @@ export default function Dashboard() {
             <div>
               <h1 className="text-3xl md:text-4xl font-bold mb-2">My Account</h1>
               <p className="text-muted-foreground">
-                Welcome back, {user?.email}
+                Welcome back!
               </p>
             </div>
-            <Button variant="outline" onClick={handleSignOut}>
-              <LogOut className="mr-2 h-4 w-4" />
-              Sign Out
-            </Button>
           </div>
         </div>
 

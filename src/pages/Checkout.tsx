@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '@/store/cart';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/hooks/useAuth';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,9 +16,11 @@ import { Loader2, Truck, Shield, CreditCard, User, Lock, Check } from 'lucide-re
 export default function Checkout() {
   const navigate = useNavigate();
   const { items, getTotalPrice, clearCart } = useCart();
-  const { user } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  
+  // Mock user data since we removed AuthProvider
+  const user = null;
 
   const [formData, setFormData] = useState({
     customerName: '',
