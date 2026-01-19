@@ -242,11 +242,11 @@ export default function HomeMedical() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pt-16">
-      {/* Hero Slider Section */}
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      {/* Hero Slider Section - Starts from very top */}
       <section 
         ref={sliderRef}
-        className="relative h-[600px] md:h-[700px] overflow-hidden -mt-16"
+        className="relative h-screen md:h-[700px] overflow-hidden"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
         onTouchStart={handleTouchStart}
@@ -285,7 +285,9 @@ export default function HomeMedical() {
               <div className={cn(
                 "absolute inset-0 flex items-center justify-center text-white p-8",
                 "md:text-center md:left-1/2 md:-translate-x-1/2 md:justify-center",
-                "text-left left-8 justify-start"
+                "text-left left-8 justify-start",
+                // Account for navbar height
+                "pt-16"
               )}>
                 <div className={cn(
                   "max-w-2xl space-y-6",
