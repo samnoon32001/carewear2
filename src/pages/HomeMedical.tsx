@@ -120,7 +120,8 @@ export default function HomeMedical() {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           avg_rating: 4.5,
-          reviews_count: 12
+          reviews_count: 12,
+          image: 'https://i.pinimg.com/1200x/8f/e7/2b/8fe72bdee892e273cdccb126873f4dd1.jpg'
         },
         {
           id: '2',
@@ -136,7 +137,8 @@ export default function HomeMedical() {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           avg_rating: 4.7,
-          reviews_count: 18
+          reviews_count: 18,
+          image: 'https://i.pinimg.com/736x/e1/06/c7/e106c7ed7069abfcf81be804a991d957.jpg'
         },
         {
           id: '3',
@@ -152,7 +154,8 @@ export default function HomeMedical() {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           avg_rating: 4.8,
-          reviews_count: 25
+          reviews_count: 25,
+          image: 'https://i.pinimg.com/736x/f2/7e/16/f27e16719210e9f53aaf45ad0a6ed7d6.jpg'
         },
         {
           id: '4',
@@ -168,7 +171,8 @@ export default function HomeMedical() {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           avg_rating: 4.6,
-          reviews_count: 15
+          reviews_count: 15,
+          image: 'https://i.pinimg.com/736x/55/48/11/5548111fa7fe47268e6c0f910abc0a0d.jpg'
         }
       ];
       
@@ -378,8 +382,8 @@ export default function HomeMedical() {
         </div>
       </section>
 
-      {/* Medical Categories */}
-      <section className="py-16 bg-white">
+      {/* Medical Categories - Extra padding for navbar visibility */}
+      <section className="pt-24 pb-16 bg-white">
         <div className="container">
           <div className="text-center mb-12 animate-fade-in">
             <div className="flex items-center justify-center mb-4">
@@ -432,8 +436,8 @@ export default function HomeMedical() {
         </div>
       </section>
 
-      {/* Featured Products */}
-      <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
+      {/* Featured Products - Extra padding for navbar visibility */}
+      <section className="pt-24 pb-16 bg-gradient-to-b from-gray-50 to-white">
         <div className="container">
           <div className="text-center mb-12 animate-fade-in">
             <div className="flex items-center justify-center mb-4">

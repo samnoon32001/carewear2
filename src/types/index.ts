@@ -24,6 +24,7 @@ export interface Product {
 export interface ProductWithRating extends Product {
   avg_rating: number;
   reviews_count: number;
+  image?: string;
 }
 
 export interface ProductImage {
