@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Star, ShoppingBag, Heart, Shield, Truck, TrendingUp, Stethoscope, Activity, Users } from 'lucide-react';
+import { ArrowRight, Star, ShoppingBag, Heart, Shield, Truck, TrendingUp, Stethoscope, Activity, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { AnimatedProductCard } from '@/components/AnimatedProductCard';
 import { ProductWithRating, Category } from '@/types';
-import { supabase } from '@/integrations/supabase/client';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { cn } from '@/lib/utils';
 
@@ -15,6 +14,88 @@ export default function HomeMedical() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const touchStart = useRef<number>(0);
+  const touchEnd = useRef<number>(0);
+
+  // Hero slides with exact specifications
+  const heroSlides = [
+    {
+      id: 1,
+      heading: "Professional Scrubs for Everyday Care",
+      subheading: "Designed for comfort, durability, and long shifts — scrubs that move with you and keep you looking professional all day.",
+      cta: "Shop Scrubs",
+      ctaLink: "/shop?category=scrub-tops",
+      image: "https://i.pinimg.com/1200x/99/83/99/998399a687eb2755c4f35cc70a271631.jpg"
+    },
+    {
+      id: 2,
+      heading: "Lab Coats That Define Authority & Precision",
+      subheading: "Sharp tailoring, breathable fabrics, and a refined professional look — ideal for doctors, researchers, and medical students.",
+      cta: "Explore Lab Coats",
+      ctaLink: "/shop?category=lab-coats",
+      image: "https://i.pinimg.com/736x/14/1c/e1/141ce164ecc43a4862871aded11b8dc1.jpg"
+    },
+    {
+      id: 3,
+      heading: "Hospital Tunics Made for Comfort & Care",
+      subheading: "Lightweight, practical, and thoughtfully designed tunics for healthcare professionals who value comfort throughout the day.",
+      cta: "View Tunics",
+      ctaLink: "/shop?category=tunics",
+      image: "https://i.pinimg.com/1200x/8c/6a/84/8c6a8477651aba1ace84c25bea19e45e.jpg"
+    }
+  ];
+
+  // Auto-slide functionality
+  useEffect(() => {
+    if (!isPaused) {
+      const interval = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [isPaused, heroSlides.length]);
+
+  // Preload images
+  useEffect(() => {
+    const preloadImages = async () => {
+      const imagePromises = heroSlides.map(slide => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.src = slide.image;
+          img.onload = resolve;
+        });
+      });
+      await Promise.all(imagePromises);
+      setImagesLoaded(true);
+    };
+    preloadImages();
+  }, [heroSlides]);
+
+  // Touch handlers for mobile swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStart.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEnd.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart.current || !touchEnd.current) return;
+    const distance = touchStart.current - touchEnd.current;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+    
+    if (isLeftSwipe) {
+      nextSlide();
+    }
+    if (isRightSwipe) {
+      prevSlide();
+    }
+  };
 
   useEffect(() => {
     fetchFeaturedProducts();
@@ -117,43 +198,16 @@ export default function HomeMedical() {
   };
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % 3);
+    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + 3) % 3);
+    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
   };
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
   };
-
-  const heroSlides = [
-    {
-      id: 1,
-      title: "Premium Medical Scrubs",
-      subtitle: "Professional comfort for healthcare heroes",
-      image: "https://images.unsplash.com/photo-1559839734-f1b5cf18eba7?w=1200&h=600&fit=crop&auto=format",
-      cta: "Shop Collection",
-      ctaLink: "/shop"
-    },
-    {
-      id: 2,
-      title: "Modern Lab Coats",
-      subtitle: "Style meets functionality in every detail",
-      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&h=600&fit=crop&auto=format",
-      cta: "Explore Lab Wear",
-      ctaLink: "/shop?category=lab-coats"
-    },
-    {
-      id: 3,
-      title: "Complete Scrub Sets",
-      subtitle: "Everything you need for your shift",
-      image: "https://images.unsplash.com/photo-1582750433442-72e5c06b1dc1?w=1200&h=600&fit=crop&auto=format",
-      cta: "View Sets",
-      ctaLink: "/shop?category=scrub-sets"
-    }
-  ];
 
   const medicalCategories = [
     { name: "Scrub Tops", slug: "scrub-tops", icon: "👕", image: "https://images.unsplash.com/photo-1598302948767-d5d6b8b0a6a?w=400&h=300&fit=crop&auto=format" },
@@ -189,89 +243,126 @@ export default function HomeMedical() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      {/* Hero Section with Medical Theme */}
-      <section className="relative h-[600px] overflow-hidden">
-        {/* Medical Pattern Background */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-teal-600 opacity-90" />
-        <div className="absolute inset-0">
-          <div className="absolute top-10 left-10 w-32 h-32 border-4 border-white/20 rounded-full" />
-          <div className="absolute top-20 right-20 w-24 h-24 border-4 border-white/20 rounded-full" />
-          <div className="absolute bottom-10 left-1/4 w-16 h-16 border-4 border-white/20 rounded-full" />
-        </div>
-
+      {/* Hero Slider Section */}
+      <section 
+        ref={sliderRef}
+        className="relative h-[600px] md:h-[700px] overflow-hidden"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         {/* Slides */}
         <div className="relative h-full">
           {heroSlides.map((slide, index) => (
             <div
               key={slide.id}
               className={cn(
-                "absolute inset-0 transition-opacity duration-1000 ease-in-out",
-                index === currentSlide ? "opacity-100" : "opacity-0"
+                "absolute inset-0 transition-all duration-1000 ease-in-out",
+                index === currentSlide 
+                  ? "opacity-100 translate-x-0" 
+                  : index < currentSlide 
+                    ? "opacity-0 -translate-x-full" 
+                    : "opacity-0 translate-x-full"
               )}
             >
+              {/* Background Image with Lazy Loading */}
               <img
                 src={slide.image}
-                alt={slide.title}
-                className="w-full h-full object-cover mix-blend-overlay"
+                alt={`${slide.heading} - Medical Professional Uniform`}
+                className={cn(
+                  "w-full h-full object-cover",
+                  imagesLoaded ? "opacity-100" : "opacity-0"
+                )}
+                loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-blue-900/80 via-blue-900/40 to-transparent" />
-              <div className="absolute inset-0 flex items-center justify-center text-center text-white p-8">
-                <div className="max-w-2xl animate-fade-in">
-                  <div className="flex items-center justify-center mb-4">
-                    <Stethoscope className="h-12 w-12 mr-3" />
-                    <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-                      {slide.title}
-                    </h1>
-                  </div>
-                  <p className="text-xl md:text-2xl mb-8 opacity-90">
-                    {slide.subtitle}
+              
+              {/* Dark Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
+              
+              {/* Content */}
+              <div className={cn(
+                "absolute inset-0 flex items-center justify-center text-white p-8",
+                "md:text-center md:left-1/2 md:-translate-x-1/2 md:justify-center",
+                "text-left left-8 justify-start"
+              )}>
+                <div className={cn(
+                  "max-w-2xl space-y-6",
+                  "animate-fade-in",
+                  index === currentSlide && "animate-slide-up"
+                )}>
+                  {/* Heading - Animates First */}
+                  <h1 className={cn(
+                    "text-3xl md:text-5xl lg:text-6xl font-bold leading-tight",
+                    "transition-all duration-700 delay-100",
+                    index === currentSlide ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  )}>
+                    {slide.heading}
+                  </h1>
+                  
+                  {/* Subheading - Animates Second */}
+                  <p className={cn(
+                    "text-lg md:text-xl lg:text-2xl opacity-90 leading-relaxed",
+                    "transition-all duration-700 delay-300",
+                    index === currentSlide ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  )}>
+                    {slide.subheading}
                   </p>
-                  <Link to={slide.ctaLink}>
-                    <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 group transition-all duration-300 hover:scale-105">
-                      {slide.cta}
-                      <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                    </Button>
-                  </Link>
+                  
+                  {/* CTA Button - Animates Last */}
+                  <div className={cn(
+                    "transition-all duration-700 delay-500",
+                    index === currentSlide ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                  )}>
+                    <Link to={slide.ctaLink}>
+                      <Button 
+                        size="lg" 
+                        className="bg-white text-blue-600 hover:bg-blue-50 group transition-all duration-300 hover:scale-105 shadow-lg"
+                      >
+                        {slide.cta}
+                        <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Slider Controls */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 z-10">
-          <button
-            onClick={prevSlide}
-            className="bg-white/20 backdrop-blur-sm rounded-full p-3 hover:bg-white/30 transition-all duration-200"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7 7" />
-            </svg>
-          </button>
-          
-          <div className="flex gap-2">
-            {[0, 1, 2].map((index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={cn(
-                  "w-3 h-3 rounded-full transition-all duration-200",
-                  index === currentSlide
-                    ? "bg-white w-4 h-4"
-                    : "bg-white/50 hover:bg-white/70 w-3 h-3"
-                )}
-              />
-            ))}
-          </div>
-          
-          <button
-            onClick={nextSlide}
-            className="bg-white/20 backdrop-blur-sm rounded-full p-3 hover:bg-white/30 transition-all duration-200"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+        {/* Navigation Arrows */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm rounded-full p-3 hover:bg-white/30 transition-all duration-200 z-10"
+          aria-label="Previous slide"
+        >
+          <ChevronLeft className="w-6 h-6 text-white" />
+        </button>
+        
+        <button
+          onClick={nextSlide}
+          className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm rounded-full p-3 hover:bg-white/30 transition-all duration-200 z-10"
+          aria-label="Next slide"
+        >
+          <ChevronRight className="w-6 h-6 text-white" />
+        </button>
+        
+        {/* Slide Indicators */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-3 z-10">
+          {heroSlides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={cn(
+                "transition-all duration-200",
+                index === currentSlide
+                  ? "bg-white w-4 h-4"
+                  : "bg-white/50 hover:bg-white/70 w-3 h-3"
+              )}
+              aria-label={`Go to slide ${index + 1}`}
+            />
+          ))}
         </div>
       </section>
 
