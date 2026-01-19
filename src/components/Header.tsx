@@ -23,14 +23,22 @@ export function Header() {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
 
-  // Handle scroll effect
+  // Handle scroll effect - React way
   useEffect(() => {
+    let ticking = false;
+    
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 50;
-      setScrolled(isScrolled);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const isScrolled = window.scrollY > 50;
+          setScrolled(isScrolled);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -62,29 +70,29 @@ export function Header() {
   return (
     <header 
       className={cn(
-        "fixed top-0 z-50 w-full transition-all duration-400 ease-in-out",
-        isHomePage && !scrolled
-          ? "bg-transparent"
-          : "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b shadow-sm"
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-400 ease-in-out",
+        // Transparent state (homepage + not scrolled)
+        isHomePage && !scrolled && "bg-transparent",
+        // Solid state (scrolled or not homepage)
+        (!isHomePage || scrolled) && "bg-white/95 backdrop-blur-md border-b border-gray-200/50 shadow-sm"
       )}
     >
-      <div className="container flex h-16 items-center justify-between">
+      <div className="container mx-auto px-4 flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
           <div className="flex items-center gap-2">
             <div className={cn(
-              "h-8 w-8 rounded-lg bg-gradient-primary flex items-center justify-center transition-all duration-400",
-              isHomePage && !scrolled ? "bg-white" : "bg-gradient-primary"
+              "h-8 w-8 rounded-lg flex items-center justify-center transition-all duration-400",
+              isHomePage && !scrolled 
+                ? "bg-white text-primary" 
+                : "bg-gradient-to-r from-blue-600 to-teal-600 text-white"
             )}>
-              <span className={cn(
-                "font-bold text-lg transition-all duration-400",
-                isHomePage && !scrolled ? "text-primary" : "text-white"
-              )}>C</span>
+              <span className="font-bold text-lg">C</span>
             </div>
             <span className={cn(
               "text-xl font-bold transition-all duration-400",
               isHomePage && !scrolled 
                 ? "text-white" 
-                : "bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+                : "bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent"
             )}>
               CareWear
             </span>
@@ -92,14 +100,14 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex gap-6">
+        <nav className="hidden md:flex items-center gap-6">
           <Link 
             to="/shop" 
             className={cn(
-              "text-sm font-medium transition-colors hover:text-primary",
+              "text-sm font-medium transition-colors duration-200",
               isHomePage && !scrolled 
                 ? "text-white hover:text-white/80" 
-                : "text-foreground hover:text-primary"
+                : "text-gray-900 hover:text-blue-600"
             )}
           >
             Shop
@@ -107,10 +115,10 @@ export function Header() {
           <Link 
             to="/categories" 
             className={cn(
-              "text-sm font-medium transition-colors hover:text-primary",
+              "text-sm font-medium transition-colors duration-200",
               isHomePage && !scrolled 
                 ? "text-white hover:text-white/80" 
-                : "text-foreground hover:text-primary"
+                : "text-gray-900 hover:text-blue-600"
             )}
           >
             Categories
@@ -119,10 +127,10 @@ export function Header() {
             <Link 
               to="/admin/products" 
               className={cn(
-                "text-sm font-medium transition-colors hover:text-accent",
+                "text-sm font-medium transition-colors duration-200",
                 isHomePage && !scrolled 
                   ? "text-white hover:text-white/80" 
-                  : "text-foreground hover:text-accent"
+                  : "text-gray-900 hover:text-teal-600"
               )}
             >
               Admin
@@ -137,17 +145,17 @@ export function Header() {
               variant="ghost" 
               size="icon" 
               className={cn(
-                "relative transition-all duration-400",
+                "relative transition-all duration-200",
                 isHomePage && !scrolled
                   ? "text-white hover:text-white/80 hover:bg-white/10"
-                  : "text-foreground hover:bg-accent"
+                  : "text-gray-900 hover:bg-gray-100"
               )}
             >
               <ShoppingCart className="h-5 w-5" />
               {cartCount > 0 && (
                 <span className={cn(
                   "absolute -top-1 -right-1 h-5 w-5 rounded-full text-white text-xs flex items-center justify-center transition-all duration-400",
-                  isHomePage && !scrolled ? "bg-accent" : "bg-primary"
+                  isHomePage && !scrolled ? "bg-teal-600" : "bg-blue-600"
                 )}>
                   {cartCount}
                 </span>
@@ -163,20 +171,20 @@ export function Header() {
                   variant="ghost" 
                   size="icon"
                   className={cn(
-                    "transition-all duration-400",
+                    "transition-all duration-200",
                     isHomePage && !scrolled
                       ? "text-white hover:text-white/80 hover:bg-white/10"
-                      : "text-foreground hover:bg-accent"
+                      : "text-gray-900 hover:bg-gray-100"
                   )}
                 >
                   <User className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem asChild>
+              <DropdownMenuContent align="end" className="bg-white border border-gray-200 shadow-lg">
+                <DropdownMenuItem asChild className="hover:bg-gray-50">
                   <Link to="/dashboard">My Orders</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => signOut()}>
+                <DropdownMenuItem onClick={() => signOut()} className="hover:bg-gray-50">
                   <LogOut className="mr-2 h-4 w-4" />
                   Sign Out
                 </DropdownMenuItem>
@@ -188,10 +196,10 @@ export function Header() {
                 variant={isHomePage && !scrolled ? "outline" : "default"}
                 size="sm"
                 className={cn(
-                  "transition-all duration-400",
+                  "transition-all duration-200 font-medium",
                   isHomePage && !scrolled
-                    ? "border-white text-white hover:bg-white hover:text-primary"
-                    : ""
+                    ? "border-white text-white hover:bg-white hover:text-blue-600"
+                    : "bg-blue-600 text-white hover:bg-blue-700"
                 )}
               >
                 Sign In
@@ -204,10 +212,10 @@ export function Header() {
             variant="ghost"
             size="icon"
             className={cn(
-              "md:hidden transition-all duration-400",
+              "md:hidden transition-all duration-200",
               isHomePage && !scrolled
                 ? "text-white hover:text-white/80 hover:bg-white/10"
-                : "text-foreground hover:bg-accent"
+                : "text-gray-900 hover:bg-gray-100"
             )}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
@@ -221,15 +229,15 @@ export function Header() {
         <div className={cn(
           "md:hidden border-t transition-all duration-400",
           isHomePage && !scrolled
-            ? "bg-white/10 backdrop-blur border-white/20"
-            : "bg-background border-border"
+            ? "bg-white/10 backdrop-blur-md border-white/20"
+            : "bg-white border-gray-200"
         )}>
-          <div className="container py-4 space-y-3">
+          <div className="container mx-auto px-4 py-4 space-y-3">
             <Link 
               to="/shop" 
               className={cn(
-                "block text-sm font-medium transition-colors hover:text-primary",
-                isHomePage && !scrolled ? "text-white" : "text-foreground"
+                "block text-sm font-medium transition-colors duration-200 py-2",
+                isHomePage && !scrolled ? "text-white" : "text-gray-900"
               )}
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -238,8 +246,8 @@ export function Header() {
             <Link 
               to="/categories" 
               className={cn(
-                "block text-sm font-medium transition-colors hover:text-primary",
-                isHomePage && !scrolled ? "text-white" : "text-foreground"
+                "block text-sm font-medium transition-colors duration-200 py-2",
+                isHomePage && !scrolled ? "text-white" : "text-gray-900"
               )}
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -249,8 +257,8 @@ export function Header() {
               <Link 
                 to="/admin/products" 
                 className={cn(
-                  "block text-sm font-medium transition-colors hover:text-accent",
-                  isHomePage && !scrolled ? "text-white" : "text-foreground"
+                  "block text-sm font-medium transition-colors duration-200 py-2",
+                  isHomePage && !scrolled ? "text-white" : "text-gray-900"
                 )}
                 onClick={() => setMobileMenuOpen(false)}
               >
