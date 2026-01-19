@@ -48,12 +48,12 @@ export default function HomeMedical() {
     }
   ];
 
-  // Auto-slide functionality
+  // Auto-slide functionality - Enhanced with 6 second timing
   useEffect(() => {
     if (!isPaused) {
       const interval = setInterval(() => {
         setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-      }, 5000);
+      }, 6000); // 6 seconds for better viewing experience
       return () => clearInterval(interval);
     }
   }, [isPaused, heroSlides.length]);
@@ -259,27 +259,32 @@ export default function HomeMedical() {
             <div
               key={slide.id}
               className={cn(
-                "absolute inset-0 transition-all duration-1000 ease-in-out",
+                "absolute inset-0 transition-all duration-1500 ease-in-out",
                 index === currentSlide 
-                  ? "opacity-100 translate-x-0" 
+                  ? "opacity-100 translate-x-0 scale-100" 
                   : index < currentSlide 
-                    ? "opacity-0 -translate-x-full" 
-                    : "opacity-0 translate-x-full"
+                    ? "opacity-0 -translate-x-full scale-95" 
+                    : "opacity-0 translate-x-full scale-95"
               )}
             >
-              {/* Background Image with Lazy Loading */}
+              {/* Background Image with Enhanced Lazy Loading and Responsive Handling */}
               <img
                 src={slide.image}
                 alt={`${slide.heading} - Medical Professional Uniform`}
                 className={cn(
-                  "w-full h-full object-cover",
+                  "w-full h-full object-cover transition-opacity duration-1000",
                   imagesLoaded ? "opacity-100" : "opacity-0"
                 )}
                 loading="lazy"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
+                style={{
+                  objectPosition: 'center',
+                  objectFit: 'cover'
+                }}
               />
               
-              {/* Dark Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
+              {/* Enhanced Gradient Overlay for better text visibility */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40" />
               
               {/* Content */}
               <div className={cn(
@@ -291,36 +296,41 @@ export default function HomeMedical() {
               )}>
                 <div className={cn(
                   "max-w-2xl space-y-6",
-                  "animate-fade-in",
-                  index === currentSlide && "animate-slide-up"
+                  index === currentSlide && "animate-fade-in"
                 )}>
-                  {/* Heading - Animates First */}
+                  {/* Heading - Enhanced entrance animation */}
                   <h1 className={cn(
                     "text-3xl md:text-5xl lg:text-6xl font-bold leading-tight",
-                    "transition-all duration-700 delay-100",
-                    index === currentSlide ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                    "transition-all duration-1000 delay-100 transform",
+                    index === currentSlide 
+                      ? "opacity-100 translate-y-0" 
+                      : "opacity-0 translate-y-8"
                   )}>
                     {slide.heading}
                   </h1>
                   
-                  {/* Subheading - Animates Second */}
+                  {/* Subheading - Enhanced entrance animation */}
                   <p className={cn(
                     "text-lg md:text-xl lg:text-2xl opacity-90 leading-relaxed",
-                    "transition-all duration-700 delay-300",
-                    index === currentSlide ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                    "transition-all duration-1000 delay-300 transform",
+                    index === currentSlide 
+                      ? "opacity-90 translate-y-0" 
+                      : "opacity-0 translate-y-8"
                   )}>
                     {slide.subheading}
                   </p>
                   
-                  {/* CTA Button - Animates Last */}
+                  {/* CTA Button - Enhanced entrance animation */}
                   <div className={cn(
-                    "transition-all duration-700 delay-500",
-                    index === currentSlide ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                    "transition-all duration-1000 delay-500 transform",
+                    index === currentSlide 
+                      ? "opacity-100 translate-y-0" 
+                      : "opacity-0 translate-y-8"
                   )}>
                     <Link to={slide.ctaLink}>
                       <Button 
                         size="lg" 
-                        className="bg-white text-blue-600 hover:bg-blue-50 group transition-all duration-300 hover:scale-105 shadow-lg"
+                        className="bg-white text-blue-600 hover:bg-blue-50 group transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                       >
                         {slide.cta}
                         <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -333,33 +343,33 @@ export default function HomeMedical() {
           ))}
         </div>
 
-        {/* Navigation Arrows */}
+        {/* Enhanced Navigation Arrows with hover animations */}
         <button
           onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm rounded-full p-3 hover:bg-white/30 transition-all duration-200 z-10"
+          className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm rounded-full p-3 hover:bg-white/30 hover:scale-110 transition-all duration-300 z-10 group"
           aria-label="Previous slide"
         >
-          <ChevronLeft className="w-6 h-6 text-white" />
+          <ChevronLeft className="w-6 h-6 text-white transition-transform duration-300 group-hover:-translate-x-1" />
         </button>
         
         <button
           onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm rounded-full p-3 hover:bg-white/30 transition-all duration-200 z-10"
+          className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 backdrop-blur-sm rounded-full p-3 hover:bg-white/30 hover:scale-110 transition-all duration-300 z-10 group"
           aria-label="Next slide"
         >
-          <ChevronRight className="w-6 h-6 text-white" />
+          <ChevronRight className="w-6 h-6 text-white transition-transform duration-300 group-hover:translate-x-1" />
         </button>
         
-        {/* Slide Indicators */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-3 z-10">
+        {/* Enhanced Slide Indicators with animations */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-3 z-10 bg-black/20 backdrop-blur-sm rounded-full px-4 py-2">
           {heroSlides.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
               className={cn(
-                "transition-all duration-200",
+                "transition-all duration-300 transform hover:scale-125",
                 index === currentSlide
-                  ? "bg-white w-4 h-4"
+                  ? "bg-white w-4 h-4 shadow-lg scale-110" 
                   : "bg-white/50 hover:bg-white/70 w-3 h-3"
               )}
               aria-label={`Go to slide ${index + 1}`}
