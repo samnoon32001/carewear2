@@ -30,7 +30,8 @@ export function Header() {
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          const isScrolled = window.scrollY > 50;
+          // Trigger after scrolling past 100vh (full landing page height)
+          const isScrolled = window.scrollY > window.innerHeight;
           setScrolled(isScrolled);
           ticking = false;
         });
@@ -173,12 +174,12 @@ export function Header() {
           ) : (
             <Link to="/auth">
               <Button 
-                variant={isHomePage && !scrolled ? "outline" : "default"}
+                variant={isHomePage && !scrolled ? "default" : "default"}
                 size="sm"
                 className={cn(
                   "transition-all duration-200 font-medium",
                   isHomePage && !scrolled
-                    ? "border-white text-white hover:bg-white hover:text-blue-600"
+                    ? "bg-white text-blue-600 hover:bg-white/90 hover:text-blue-700"
                     : "bg-blue-600 text-white hover:bg-blue-700"
                 )}
               >

@@ -243,10 +243,10 @@ export default function HomeMedical() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      {/* Hero Slider Section - Starts from very top */}
+      {/* Hero Slider Section - 100vh height */}
       <section 
         ref={sliderRef}
-        className="relative h-screen md:h-[700px] overflow-hidden"
+        className="relative h-screen overflow-hidden"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
         onTouchStart={handleTouchStart}
