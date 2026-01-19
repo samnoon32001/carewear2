@@ -210,12 +210,12 @@ export default function HomeMedical() {
   };
 
   const medicalCategories = [
-    { name: "Scrub Tops", slug: "scrub-tops", icon: "👕", image: "https://images.unsplash.com/photo-1598302948767-d5d6b8b0a6a?w=400&h=300&fit=crop&auto=format" },
-    { name: "Scrub Pants", slug: "scrub-pants", icon: "👖", image: "https://images.unsplash.com/photo-1578632294429-2d8e7f947d3?w=400&h=300&fit=crop&auto=format" },
-    { name: "Lab Coats", slug: "lab-coats", icon: "🥼", image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=400&h=300&fit=crop&auto=format" },
-    { name: "Scrub Sets", slug: "scrub-sets", icon: "👔", image: "https://images.unsplash.com/photo-1582750433442-72e5c06b1dc1?w=400&h=300&fit=crop&auto=format" },
-    { name: "Medical Accessories", slug: "accessories", icon: "⚕️", image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=300&fit=crop&auto=format" },
-    { name: "Nursing Shoes", slug: "shoes", icon: "👟", image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=300&fit=crop&auto=format" }
+    { name: "Scrub Tops", slug: "scrub-tops", icon: "👕", image: "https://i.pinimg.com/1200x/8f/e7/2b/8fe72bdee892e273cdccb126873f4dd1.jpg" },
+    { name: "Scrub Pants", slug: "scrub-pants", icon: "👖", image: "https://i.pinimg.com/736x/e1/06/c7/e106c7ed7069abfcf81be804a991d957.jpg" },
+    { name: "Lab Coats", slug: "lab-coats", icon: "🥼", image: "https://i.pinimg.com/736x/f2/7e/16/f27e16719210e9f53aaf45ad0a6ed7d6.jpg" },
+    { name: "Scrub Sets", slug: "scrub-sets", icon: "👔", image: "https://i.pinimg.com/736x/55/48/11/5548111fa7fe47268e6c0f910abc0a0d.jpg" },
+    { name: "Medical Accessories", slug: "accessories", icon: "⚕️", image: "https://i.pinimg.com/736x/f8/68/a0/f868a050b44d9bcd83c63f449c650ce1.jpg" },
+    { name: "Nursing Shoes", slug: "shoes", icon: "👟", image: "https://i.pinimg.com/1200x/d9/6d/10/d96d104dd8bae8db48c17808ec48213a.jpg" }
   ];
 
   const benefits = [
