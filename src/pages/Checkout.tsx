@@ -93,30 +93,29 @@ export default function Checkout() {
     try {
       const totalAmount = total;
 
-      // Create order
-      const { data: order, error: orderError } = await supabase
-        .from('orders')
-        .insert({
-          user_id: user?.id || null,
-          customer_name: user ? undefined : formData.customerName,
-          customer_email: user ? undefined : formData.customerEmail,
-          phone: formData.phone,
-          total_amount: totalAmount,
-          status: 'pending',
-          shipping_address: {
-            street: formData.street,
-            city: formData.city,
-            state: formData.state,
-            zip: formData.zip,
-            country: formData.country,
-          },
-        })
-        .select()
-        .single();
+      // Mock order creation since we removed Supabase
+      const mockOrder = {
+        id: Date.now().toString(),
+        user_id: user?.id || null,
+        customer_name: user ? undefined : formData.customerName,
+        customer_email: user ? undefined : formData.customerEmail,
+        phone: formData.phone,
+        total_amount: totalAmount,
+        status: 'pending' as const,
+        shipping_address: {
+          street: formData.street,
+          city: formData.city,
+          state: formData.state,
+          zip: formData.zip,
+          country: formData.country,
+        },
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
 
-      if (orderError) throw orderError;
+      const order = mockOrder;
 
-      // Create order items
+      // Mock order items creation
       const orderItems = items.map((item) => ({
         order_id: order.id,
         product_id: item.product.id,
@@ -127,11 +126,8 @@ export default function Checkout() {
         selected_color: item.selected_color,
       }));
 
-      const { error: itemsError } = await supabase
-        .from('order_items')
-        .insert(orderItems);
-
-      if (itemsError) throw itemsError;
+      // Mock order items insertion
+      console.log('Mock order items created:', orderItems);
 
       clearCart();
       toast({
