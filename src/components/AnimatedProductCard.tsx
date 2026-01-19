@@ -41,7 +41,7 @@ export function AnimatedProductCard({ product, className }: AnimatedProductCardP
     setIsImageLoading(false);
   };
 
-  const imageUrl = 'https://images.unsplash.com/photo-1606757513965-65b9407854b5?w=400&h=300&fit=crop';
+  const imageUrl = product.image || 'https://images.unsplash.com/photo-1606757513965-65b9407854b5?w=400&h=300&fit=crop';
 
   return (
     <div className={cn(
