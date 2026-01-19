@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react';
 import { ShoppingCart, User, LogOut, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/store/cart';
-import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +13,9 @@ import { cn } from '@/lib/utils';
 
 export function Header() {
   const { getTotalItems } = useCart();
-  const { user, signOut } = useAuth();
+  // Mock user data since we removed AuthProvider
+  const user = null; // No authenticated user
+  const signOut = () => console.log('Sign out clicked - no auth provider');
   const [isAdmin, setIsAdmin] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -42,30 +42,10 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Mock admin check since we removed AuthProvider and Supabase
   useEffect(() => {
-    const checkAdmin = async () => {
-      if (!user) {
-        setIsAdmin(false);
-        return;
-      }
-      
-      const { data, error } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', user.id)
-        .eq('role', 'admin')
-        .single();
-      
-      if (error && error.code !== 'PGRST116') {
-        console.error('Error checking admin status:', error);
-        return;
-      }
-      
-      setIsAdmin(!!data);
-    };
-
-    checkAdmin();
-  }, [user]);
+    setIsAdmin(false); // No admin without auth provider
+  }, []);
 
   return (
     <header 
