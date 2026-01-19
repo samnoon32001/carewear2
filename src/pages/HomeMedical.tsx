@@ -485,13 +485,18 @@ export default function HomeMedical() {
         </div>
       </section>
 
-      {/* Trust Indicators */}
-      <section className="py-16 bg-blue-600 text-white">
+      {/* Trust Indicators - Redesigned with CareWear theme */}
+      <section className="pt-24 pb-16 bg-gradient-to-br from-blue-50 via-teal-50 to-white">
         <div className="container">
           <div className="text-center mb-12 animate-fade-in">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Healthcare Professionals Choose CareWear</h2>
-            <p className="text-xl opacity-90">
-              Trusted by thousands of medical professionals nationwide
+            <div className="flex items-center justify-center mb-6">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-teal-600 rounded-full flex items-center justify-center mb-4">
+                <Shield className="h-8 w-8 text-white" />
+              </div>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">Why Healthcare Professionals Choose CareWear</h2>
+            <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+              Trusted by thousands of medical professionals nationwide for premium quality and comfort
             </p>
           </div>
           
@@ -500,17 +505,19 @@ export default function HomeMedical() {
               <div
                 key={index}
                 className={cn(
-                  "text-center group animate-fade-in",
+                  "text-center group animate-fade-in bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2",
                   `animation-delay-${index * 150}`
                 )}
               >
-                <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-white/30">
-                  {benefit.icon}
+                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-100 to-teal-100 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:from-blue-600 group-hover:to-teal-600">
+                  <div className="text-blue-600 group-hover:text-white transition-colors duration-300">
+                    {benefit.icon}
+                  </div>
                 </div>
-                <h3 className="font-bold text-xl mb-2 group-hover:text-yellow-300 transition-colors duration-200">
+                <h3 className="font-bold text-xl mb-2 text-gray-800 group-hover:text-blue-600 transition-colors duration-200">
                   {benefit.title}
                 </h3>
-                <p className="opacity-90">
+                <p className="text-gray-600 leading-relaxed">
                   {benefit.description}
                 </p>
               </div>
@@ -519,30 +526,44 @@ export default function HomeMedical() {
         </div>
       </section>
 
-      {/* Newsletter Section */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-teal-600 text-white">
-        <div className="container text-center">
+      {/* Newsletter Section - Enhanced with CareWear theme and proper padding */}
+      <section className="pt-24 pb-16 bg-gradient-to-r from-blue-600 to-teal-600 text-white relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Ccircle cx='30' cy='30' r='2' fill='white' opacity='0.3'/%3E%3C/g%3E%3C/svg%3E")`,
+            backgroundSize: '60px 60px'
+          }} />
+        </div>
+        
+        <div className="container text-center relative z-10">
           <div className="max-w-2xl mx-auto animate-fade-in">
-            <div className="flex items-center justify-center mb-4">
-              <Heart className="h-8 w-8 mr-3" />
-              <h2 className="text-3xl md:text-4xl font-bold">Join the CareWear Family</h2>
+            <div className="flex items-center justify-center mb-6">
+              <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mb-4">
+                <Heart className="h-10 w-10 text-white" />
+              </div>
             </div>
-            <p className="text-xl mb-8 opacity-90">
-              Get exclusive offers and new medical scrub arrivals
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Join the CareWear Family</h2>
+            <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+              Get exclusive offers, new medical scrub arrivals, and professional healthcare insights
             </p>
             <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
               <input
                 type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-6 py-4 rounded-full text-gray-900 bg-white/95 placeholder:text-gray-500 focus:outline-none focus:ring-4 focus:ring-white/50 text-lg"
+                placeholder="Enter your email address"
+                className="flex-1 px-6 py-4 rounded-full text-gray-900 bg-white/95 backdrop-blur-sm placeholder:text-gray-500 focus:outline-none focus:ring-4 focus:ring-white/50 text-lg border-2 border-transparent focus:border-white transition-all duration-300"
               />
               <Button 
                 size="lg" 
-                className="bg-white text-blue-600 hover:bg-blue-50 font-bold px-8 transition-all duration-300 hover:scale-105"
+                className="bg-white text-blue-600 hover:bg-blue-50 font-bold px-8 transition-all duration-300 hover:scale-105 hover:shadow-lg"
               >
-                Subscribe
+                Subscribe Now
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </form>
+            <p className="text-sm opacity-75 mt-4">
+              Join 10,000+ healthcare professionals. Unsubscribe anytime.
+            </p>
           </div>
         </div>
       </section>
